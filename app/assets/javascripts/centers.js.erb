@@ -1,0 +1,194 @@
+/*
+# Place all the behaviors and hooks related to the matching controller here.
+# All this logic will automatically be available in application.js.
+# You can use CoffeeScript in this file: http://coffeescript.org/
+*/
+
+var main = function(){
+
+	var page_id = $('.main').data('pageId');
+	var $search_area = $('.search-area');
+	var search_box = $('#search');
+	var state_search = $('#q_state_cont');
+	var search_total = $('.search-stats').data('total');
+	var url_array = ["" , "unkn", "na", "n/a", "none", "NA", "N/A" ];
+
+
+	if (search_box.val() === "" && state_search.val() === "States"){
+		$('.search-stats').hide();
+
+		$search_area.css({
+			"position" : "relative",
+			"top" : "50%",
+			"left" : "33%",
+			"margin-top" : "20%"
+		});
+		$('.search-area h3').show('slow');
+		$('.adv_select').hide();
+	}else{
+		$('.search-stats').show();
+		$('.adv_select').show();
+		$('.search-area h3').hide();
+		$search_area.css({
+			"position" : "inherit",
+			"top" : "0px",
+			"left" : "0px",
+			"margin-top" : "0px"
+		}, 'slow');
+	}
+
+   $('#adv_form').click(function(){
+   		$('.advanced-search').toggle(this.checked);
+   });
+/*
+   if ( $('#adv_form').is(':checked')){
+   		$('.advanced-search').show();
+   		$('.simple-search').hide();
+   }else{
+   		$('.simple-search').show();
+   		$('.advanced-search').hide();
+   }*/
+
+	if (search_total <= 0 ){
+	    $('#map-canvas').hide();
+	}else{
+	    $('#map-canvas').show();
+	}
+
+	if( page_id === "index" ){
+
+		if (search_box.val() !== "" || state_search !== "States") {
+		var map = L.map('map-canvas');
+		
+		var url = document.URL.split("?")[1];
+		var url_params ="?"+ url;
+
+
+		$('.btn-location').click(function(){
+			var $activeBtn = $(this);
+			var latitude = $(this).data('lat');
+			var longitude = $(this).data('lng');
+			//console.log(latitude);
+			var center = new L.LatLng(latitude, longitude);
+			map.setView(center, 12);
+
+        	$activeBtn.addClass('selected');
+        	$('.btn-location').not($activeBtn).removeClass('selected');
+			
+		});
+
+		$.getJSON('centers.json'+ url_params,  function(data){
+	           
+	            showMaps( data);
+	            /*
+	            $.each(data, function(index){
+	               var search_id = data[index].id,
+	               		site_name = data[index].site_name,
+	               	   	longitude = data[index].longitude,
+	        	   	   	latitude =  data[index].latitude;
+	        	   	   	console.log(site_name, longitude, latitude);
+	        	   	   	showMap('map-canvas', data[index]);
+
+	            });*/
+	    });
+		}
+
+	} else if ( page_id === "show"){
+
+		//var map1 = L.map('map');
+		
+		var center_id = $('#map').data('centerId');
+
+	    $.getJSON(center_id + '.json', function(data){
+	     		showMap(data);
+	    });
+
+	}
+
+	var showMaps = function(data){
+		var lat = data[0].latitude, lng = data[0].longitude;
+		var mainIcon = "<%= asset_path('marker-icon.png') %>";
+		var shadowIcon = "<%= asset_path('marker-shadow.png') %>";
+
+		
+		var center = new L.LatLng(lat, lng);
+		map.setView(center, 12);
+
+		var MainIcon = L.Icon.Default.extend({
+			options: {
+				iconUrl: mainIcon,
+				shadowUrl: shadowIcon
+			}
+		});
+
+		var mainIcon = new MainIcon();
+
+		L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+			maxZoom: 18
+		}).addTo(map);
+
+		/*
+		L.tileLayer( 'http://{s}.mqcdn.com/tiles/1.0.0/map/{z}/{x}/{y}.png', {
+	    	attribution: '&copy; <a href="http://osm.org/copyright" title="OpenStreetMap" target="_blank">OpenStreetMap</a> contributors | Tiles Courtesy of <a href="http://www.mapquest.com/" title="MapQuest" target="_blank">MapQuest</a> <img src="http://developer.mapquest.com/content/osm/mq_logo.png" width="16" height="16">',
+	    	subdomains: ['otile1','otile2','otile3','otile4']
+			}).addTo( map );*/
+		
+		$.each(data, function(index){
+			L.marker( [data[index].latitude, data[index].longitude], {icon: mainIcon})
+				.bindPopup( '<a href="/centers/' + data[index].id+ '">' + data[index].site_name + '</a>')
+				.addTo( map );
+
+		});
+	}
+
+	var showMap = function( data) {
+		
+		var lat = data.latitude, lng = data.longitude;
+		var imageIcon = "<%= asset_path('marker-icon-red.png') %>";
+		var shadowIcon = "<%= asset_path('marker-shadow.png') %>";
+		var website = "";
+		//*
+		var map1 = L.map('map', {
+			center : [lat,  lng],		
+			zoom: 15
+
+		});//*/
+		//var center = new LatLng(lat, lng);
+		//map1.setView(center, 15);
+
+		var RedIcon = L.Icon.Default.extend({
+			options: {
+				iconUrl: imageIcon,
+				shadowUrl: shadowIcon
+			}
+		});
+
+		var redIcon = new RedIcon();
+
+		L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors',
+			maxZoom: 18
+		}).addTo(map1);
+		//console.log(data.website);
+		var url_exists = $.inArray(data.website, url_array);
+				
+		if (data.website === null || url_exists >= 0){
+			website = data.site_name;
+		} else {
+			
+			//website = '<a href="http://' + data.website+ '">' + data.site_name + '</a>';
+			website = '<a href="' + data.website+ '">' + data.site_name + '</a>';
+		}
+		
+		L.marker( [data.latitude, data.longitude], {icon: redIcon})
+				.bindPopup( website  )
+				.addTo( map1 );
+	}
+
+	
+    
+}
+
+$(document).ready(main);
+

@@ -1,0 +1,1 @@
+$redis = Redis.new(:host => ENV['REDIS_HOST'], :port => 16672, :password => ENV['REDIS_PASS'])

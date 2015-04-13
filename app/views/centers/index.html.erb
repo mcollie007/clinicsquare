@@ -1,0 +1,98 @@
+
+<div class="main" data-page-id="index">
+	<div class="container">
+
+		
+<div class="search-area">
+		<div class="row">
+			
+			<div class="col-xs-8 col-md-8">
+				<h3>ClinicSquare</h3>
+				
+		
+		<%= search_form_for @search,  class: "form-search" do |f| %>
+			<div class="advanced-search" style="display: none;">	
+				<em style="margin: 0 auto;">Search by city, county name or zip code</em>
+				<div class="form-group">
+					<%#= f.label :zip_code_cont, "Zip Code" %>
+					<%= f.search_field :zip_code_cont, class: "input-medium search-query-adv", placeholder: "Zip code" %>
+				</div>
+				<div class="form-group">
+					<%#= f.label :county_name_cont, "County" %>
+					<%= f.search_field :county_name_cont, class: "input-medium search-query-adv", placeholder: "County"%>
+				</div>
+			</div>
+			<div class="form-group">
+			<%= f.label :city_cont, "City" %>
+			<%= f.search_field :city_cont, class: "input-medium search-query", id: "search" %>
+
+			<%#= f.label :state_cont, "State" %>
+			<%#= f.search_field :state_cont, class:"input-medium search-query" %>
+			<%= f.select :state_cont, CentersHelper.state_array %>
+			
+			<%= f.submit "Search",  class: "btn btn-small btn-info" %>
+			</div>
+		<% end %>
+		
+
+		<div class="adv_select" style="float: left; clear: both;">
+			<label for="adv_form">Advanced</label>
+			<input id="adv_form" name="Advanced" type="checkbox"/>
+		</div>
+ 		
+			
+			</div>
+
+
+			<div class="col-xs-4 col-md-4"></div>
+		</div><!-- /.row -->
+</div><!--/.search-area -->
+		<div class="row">
+			<div class="col-xs-12 col-md-12" >
+				<div class="container-fluid" id="map-canvas"></div>
+				<p class="search-stats" data-total="<%= @total %>"><%= @total == 0 ? "No Health Centers Found" : "#{@total} Health Centers Found" %></p>
+			</div>
+		</div>
+		
+		<div class="row">
+			<div class="search-list">
+			
+			<% @centers.each do |center| %>
+				<div class="col-xs-4 col-md-4 search-item cal-<%= center.op_calendar.downcase %>">
+					<% site_name = CentersHelper.name_format(center.site_name) %>
+					<% link_name = CentersHelper.link_format(center.website) %>
+					<h4><%= link_to site_name, center %></h4>
+					
+					<% if CentersHelper.url_present.include? center.website %>
+					  Website unavailable</br>
+					<% else %>
+					    <%= link_to CentersHelper.web_format(center.website), "#{link_name}", class: "search-link" %> <br>
+					<% end %>
+					<p class="search-info">
+						<button class="bttn btn-location" data-lat="<%= center.latitude%>" data-lng="<%= center.longitude%>"></button>
+					</p>
+					<p><%= center.address ? "#{center.address}" : "Not Avaiable"%>, <%= center.city %>, 
+					<%= center.state %>, <%= CentersHelper.zipcode_format(center.zip_code) %> <%= center.full_county_name %>
+				    </p>
+					<div style="clear:both;"></div>
+					<div class="search-address">
+					<p><em>Phone:</em> <%= center.phone_number ? "#{center.phone_number}" : "Not Available"%></p>
+					<p><em>Fax:</em> <%= center.fax_number ? "#{center.fax_number}" : "Not Available"%></p>
+					<p><em>Admin #:</em> <%= center.admin_number ? "#{center.admin_number}" : "Not Available" %></p>
+				</div>
+					
+				</div>
+
+			<% end %>
+			</div>
+		
+		</div><!--/.row -->
+
+		<div class="row">
+			<div class="col-xs-6 col-md-6">
+				<%= will_paginate @centers unless @centers.empty? %> 
+			</div>
+		</div>
+
+	</div>
+</div>

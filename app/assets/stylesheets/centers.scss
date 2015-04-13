@@ -1,0 +1,172 @@
+// Place all the styles related to the Centers controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+body {
+	font-size: 13px;
+}
+.header {
+	
+	padding: 15px 0 10px 0;
+	margin-bottom:10px;
+	background: #456789;
+}
+h4 a{
+	font-size: 15px;
+	/*text-transform: lowercase;*/
+}
+h4 a:firstletter{
+	text-transform: uppercase;
+}
+.footer {
+	position: absolute;
+	bottom:0;
+	width:100%;
+	padding: 30px 0 40px 0;
+	background: #456789;
+	color: #fff;
+	margin-top: 70px;
+}
+.logo h1{
+	color: #fff;
+	display:inline;
+	font-size: 18px;
+	text-decoration:none;
+}
+.header a{
+	color:#fff;
+}
+.header a:hover{
+	color:#ff3483;
+	text-decoration:none;
+}
+.right {
+	float:right;
+	clear:both;
+}
+.nav ul{
+	display:inline;
+}
+.menu li{
+	display:inline;
+	list-style-type:none;
+	padding: 10px 5px 10px 5px;
+	background: transparent;
+	color: #fff;
+}
+.search-query{
+	width:55%;
+}
+.search-query-adv{
+	width: 100%;
+}
+.btn{
+	margin-top: -2px;
+	padding: 2px 6px;
+}
+.search-list ul{
+	margin-left:-40px;
+}
+.search-list li{
+	margin-top:-15px;
+	list-style-type:none;
+	padding: 10px 0;
+	
+}
+.search-info {
+	float:left;
+	display:inline;
+}
+.search-item {
+	/*border: 1px solid #9945ff;
+	margin-right: 1px;
+	padding: 15px 20px 15px 20px;&*/
+	margin-bottom:1%;
+	
+}
+.search-link {
+	color:#008000;
+}
+.search-area h3 {
+	color: #006dcc;
+	font-size: 62px;
+	
+}
+.search-area h3:hover {
+	color: #47a9ff;	
+}
+.search-address p{
+	margin: 0 0 1px;
+}
+.search-stats {
+	font-size:14px;
+	color: #b8b8b8;
+	margin-bottom: 10px;
+}
+.help p, .about p, .pagination{
+	font-size: 15px;
+}
+.help-sms {
+	margin-left: -40px;
+}
+.help-sms li{
+	list-style-type:none;
+	padding: 3px 0;
+}
+.bttn {
+  display: inline;
+  padding: 6px 12px;
+  background-color: transparent;
+  margin-right: 10px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.42857143;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-image: none;
+  border: 1px solid transparent;
+  border-radius: 4px;
+}
+.btn-location {
+	height:42px;
+	background-image: image_url('marker-icon.png');
+	background-repeat: no-repeat;
+}
+
+.btn-location:hover{
+	background-image: image_url('marker-icon-red.png');
+}
+
+.selected {
+	background-image: image_url('marker-icon-red.png');
+}
+
+
+.pagination {
+	margin-top:-15px;
+}
+
+.form-search, .form-search-adv{
+	
+	width:50%;
+}
+
+#map-canvas {
+
+  margin-top: 20px;
+  margin-bottom: 10px;
+  height: 360px;
+}
+.center-map {
+	margin-bottom: 10px;
+}
+
+#map {
+	margin-top:10px;
+	height:300px;
+}

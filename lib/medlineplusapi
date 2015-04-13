@@ -1,0 +1,4 @@
+baseurl = "http://apps.nlm.nih.gov/medlineplus/services/mpconnect_service.cfm"
+code_sys = "mainSearchCriteria.v.cs=2.16.840.1.113883.6.103"
+code = "mainSearchCriteria.v.c="
+json_comp = "&knowledgeResponseType=application/json"
