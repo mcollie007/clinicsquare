@@ -3,9 +3,11 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
   post '/receive' => 'texts#receive'
 
+  get '/health' => 'health#index'
+
   get '/help' => 'help#index'
 
-  get 'about' => 'about#index'
+  get '/about' => 'about#index'
 
   resources :centers
 
